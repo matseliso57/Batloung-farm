@@ -1,0 +1,10 @@
+{
+  "name": "batloung-farm-frontend",
+  "version": "1.0.0",
+  "description": "Batloung Farm front end (static pages)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}
