@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { testConnection } = require('./src/config/db');
 const { seedAdmin } = require('./src/utils/seedAdmin');
+const { initDbIfEmpty } = require('./src/utils/initDb');
 const { requireAuth } = require('./src/middleware/auth');
 const { notFound, errorHandler } = require('./src/middleware/errorHandler');
 
@@ -39,5 +40,9 @@ process.on('uncaughtException', (e) => console.error('Uncaught exception:', e));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`BACK END (API) running: http://localhost:${PORT}/api`);
-  testConnection().then((ok) => { if (ok) seedAdmin(); });
+  testConnection().then(async (ok) => {
+    if (!ok) return;
+    await initDbIfEmpty(); // creates tables on a brand-new empty database
+    await seedAdmin();
+  });
 });
